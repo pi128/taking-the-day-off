@@ -51,7 +51,7 @@ figure{margin:2rem auto 2.25rem;max-width:var(--wide)}
 figure.narrow{max-width:30rem}
 figure.mid{max-width:var(--col)}
 .slide{display:block;width:100%;max-width:100%;height:auto;border-radius:6px;background:var(--frame);box-shadow:0 1px 0 var(--rule),0 12px 30px -18px rgba(20,25,40,.45);border:1px solid var(--rule)}
-video.slide{aspect-ratio:auto;background:#000}
+video.slide{height:auto;background:#000}
 figcaption{font:400 .78rem/1.5 var(--mono);color:var(--muted);margin-top:.7rem;display:flex;gap:.75rem;align-items:baseline;max-width:var(--col);margin-inline:auto}
 figcaption .tag{color:var(--red);white-space:nowrap;font-weight:500}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem;align-items:start}
@@ -87,10 +87,18 @@ html{scroll-behavior:smooth}
   .tl[style*="24%"]{top:.4rem!important}.tl[style*="76%"]{top:calc(50% + .4rem)!important}
 }
 h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
+/* Videos start (muted) when they scroll into view; click anywhere on one to play, pause, or turn the sound on. */
+.vwrap{position:relative;display:block;cursor:pointer}
+.vwrap .hint{position:absolute;right:.6rem;top:.6rem;display:flex;align-items:center;gap:.35rem;padding:.3rem .55rem;border-radius:999px;background:rgba(0,0,0,.62);color:#fff;font:500 .72rem/1 var(--mono);pointer-events:none;transition:opacity .3s}
+.vwrap .hint svg{width:14px;height:14px}
+.vwrap .big{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);display:grid;place-items:center;opacity:0;transition:opacity .2s;pointer-events:none}
+.vwrap .big svg{width:26px;height:26px;margin-left:4px;fill:#fff}
+.vwrap.paused .big{opacity:1}
+.vwrap.unmuted .hint{opacity:0}
 </style>
 
 <div class="cover">
-  <img fetchpriority="high" src="media/img-01.jpg" alt="Title slide: a spiral notebook reading 'Taking the Day Off: AI stand-ins for Zoom' next to a small screen showing Ferris Bueller and a Raspberry Pi.">
+  <img width="1600" height="900" fetchpriority="high" src="media/img-01.jpg" alt="Title slide: a spiral notebook reading 'Taking the Day Off: AI stand-ins for Zoom' next to a small screen showing Ferris Bueller and a Raspberry Pi.">
 </div>
 <main id="start">
 <article class="col">
@@ -114,7 +122,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <img loading="lazy" decoding="async" class="slide" src="media/img-02.jpg" alt="Slide: Imagining a 3D scene. Left, a crude 3D room with a blocky figure at a desk. Right, a photoreal man in a blue sweater generated from it.">
+  <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-02.jpg" alt="Slide: Imagining a 3D scene. Left, a crude 3D room with a blocky figure at a desk. Right, a photoreal man in a blue sweater generated from it.">
 </figure>
 
 <article class="col">
@@ -122,7 +130,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure class="mid">
-  <video class="slide" src="media/video-01.mp4" poster="media/video-01-poster.jpg" controls playsinline preload="none"></video>
+  <video width="512" height="512" class="slide" src="media/video-01.mp4" poster="media/video-01-poster.jpg" playsinline preload="none" muted></video>
 </figure>
 
 <article class="col">
@@ -135,8 +143,8 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 
 <figure>
   <div class="vae">
-    <img loading="lazy" decoding="async" class="slide" src="media/img-03.jpg" alt="Slide: VAE diagram. A kitten photo goes into an encoder, becomes a grid of coloured cells, and a decoder rebuilds the kitten.">
-    <video class="lazy-autoplay" preload="none" data-src="media/video-02.mp4" muted loop playsinline aria-label="The output kitten, singing"></video>
+    <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-03.jpg" alt="Slide: VAE diagram. A kitten photo goes into an encoder, becomes a grid of coloured cells, and a decoder rebuilds the kitten.">
+    <video width="480" height="480" class="lazy-autoplay" preload="none" data-src="media/video-02.mp4" muted loop playsinline aria-label="The output kitten, singing"></video>
   </div>
   <figcaption><span>Kitten: “When a Cat Sings APT” by @Geday21 on YouTube.</span></figcaption>
 </figure>
@@ -148,7 +156,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 
 <figure>
   <div class="montage">
-    <video class="slide" src="media/video-03.mp4" poster="media/video-03-poster.jpg" controls playsinline preload="none"></video>
+    <video width="720" height="634" class="slide" src="media/video-03.mp4" poster="media/video-03-poster.jpg" playsinline preload="none" muted></video>
     <div class="tl l" style="top:24%"><b>LeapTalk</b><i></i></div>
     <div class="tl r" style="top:24%"><i></i><b>SoulX FlashHead Lite</b></div>
     <div class="tl l" style="top:76%"><b>AvatarForcing</b><i></i></div>
@@ -195,7 +203,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure class="narrow">
-  <video class="slide" src="media/video-04.mp4" poster="media/video-04-poster.jpg" controls playsinline preload="none"></video>
+  <video width="512" height="512" data-sound class="slide" src="media/video-04.mp4" poster="media/video-04-poster.jpg" playsinline preload="none" muted></video>
 </figure>
 
 <article class="col">
@@ -207,7 +215,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure class="narrow">
-  <video class="slide" src="media/video-05.mp4" poster="media/video-05-poster.jpg" controls playsinline preload="none"></video>
+  <video width="512" height="512" data-sound class="slide" src="media/video-05.mp4" poster="media/video-05-poster.jpg" playsinline preload="none" muted></video>
   <figcaption><span class="tag">Video</span><span>“I recall Central Park in fall.” Breeze voice, SoulX LiveAct face, first Ferris portrait.</span></figcaption>
 </figure>
 
@@ -216,7 +224,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <img loading="lazy" decoding="async" class="slide" src="media/img-04.jpg" alt="Slide: James on his webcam beside the earlier, brighter Ferris portrait.">
+  <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-04.jpg" alt="Slide: James on his webcam beside the earlier, brighter Ferris portrait.">
 </figure>
 
 <article class="col">
@@ -224,11 +232,11 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <img loading="lazy" decoding="async" class="slide" src="media/img-05.jpg" alt="Slide: James on his webcam beside the camera-matched Ferris portrait.">
+  <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-05.jpg" alt="Slide: James on his webcam beside the camera-matched Ferris portrait.">
 </figure>
 
 <figure class="narrow">
-  <video class="slide" src="media/video-06.mp4" poster="media/video-06-poster.jpg" controls playsinline preload="none"></video>
+  <video width="512" height="512" data-sound class="slide" src="media/video-06.mp4" poster="media/video-06-poster.jpg" playsinline preload="none" muted></video>
   <figcaption><span class="tag">Video</span><span>Ferris, talking: the same cleaned Breeze singing on the camera-matched portrait.</span></figcaption>
 </figure>
 
@@ -238,7 +246,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <img loading="lazy" decoding="async" class="slide" src="media/img-06.jpg" alt="Slide: pipeline diagram. Audio input → Transcribe → Jev decide → Qwen write → Reply, with memory and Ferris persona feeding Qwen, a 'no' path looping back to listening, and a second Jev check routing to LiveAct for movement.">
+  <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-06.jpg" alt="Slide: pipeline diagram. Audio input → Transcribe → Jev decide → Qwen write → Reply, with memory and Ferris persona feeding Qwen, a 'no' path looping back to listening, and a second Jev check routing to LiveAct for movement.">
 </figure>
 
 <article class="col">
@@ -260,7 +268,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <video class="slide" src="media/video-07.mp4" poster="media/video-07-poster.jpg" controls playsinline preload="none"></video>
+  <video width="960" height="540" data-sound class="slide" src="media/video-07.mp4" poster="media/video-07-poster.jpg" playsinline preload="none" muted></video>
   <figcaption><span class="tag">Video</span><span>The classroom in Zoom gallery view, with sound.</span></figcaption>
 </figure>
 
@@ -270,7 +278,7 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </article>
 
 <figure>
-  <img loading="lazy" decoding="async" class="slide" src="media/img-07.jpg" alt="Slide: Running locally. Whisper, Qwen3.5 4B, Chatterbox Nano 110M, SoulX Lite; total about 13–14 GB.">
+  <img width="1600" height="900" loading="lazy" decoding="async" class="slide" src="media/img-07.jpg" alt="Slide: Running locally. Whisper, Qwen3.5 4B, Chatterbox Nano 110M, SoulX Lite; total about 13–14 GB.">
 </figure>
 
 <article class="col">
@@ -285,6 +293,34 @@ h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
     <p class="note">Ferris Bueller's Day Off (1986) was written and directed by John Hughes. Film references are used for commentary; all Ferris voice and video in the demos is generated.</p>
   </section>
 </main>
+<script>
+// Each video plays (muted) once it's half on screen and pauses when it leaves.
+// Clicking a video toggles it; on a video with sound, the first click unmutes and restarts it.
+(function(){
+var vids=[].slice.call(document.querySelectorAll('video.slide'));
+var SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m23 9-6 6M17 9l6 6"/></svg>';
+var PLAY='<svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg>';
+vids.forEach(function(v){
+  var w=document.createElement('span');w.className='vwrap paused';
+  v.parentNode.insertBefore(w,v);w.appendChild(v);
+  w.insertAdjacentHTML('beforeend','<span class="big" aria-hidden="true">'+PLAY+'</span>');
+  if(v.hasAttribute('data-sound'))w.insertAdjacentHTML('beforeend','<span class="hint">'+SPK+'Click for sound</span>');
+  v.muted=true;v.userPaused=false;
+  v.addEventListener('play',function(){w.classList.remove('paused')});
+  v.addEventListener('pause',function(){w.classList.add('paused')});
+  v.addEventListener('ended',function(){w.classList.add('paused')});
+  w.addEventListener('click',function(){
+    if(v.hasAttribute('data-sound')&&v.muted){v.muted=false;w.classList.add('unmuted');v.currentTime=0;v.userPaused=false;v.play();return}
+    if(v.paused){v.userPaused=false;v.play()}else{v.userPaused=true;v.pause()}
+  });
+});
+if(!('IntersectionObserver' in window))return;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;
+  if(e.isIntersecting){if(!v.userPaused&&!v.ended)v.play().catch(function(){})}else if(!v.paused)v.pause()})},{threshold:.5});
+vids.forEach(function(v){io.observe(v)});
+})();
+</script>
+
 <script>
 // Start the singing cat only when it scrolls into view, and pause it when it leaves.
 (function(){var v=document.querySelectorAll('video.lazy-autoplay');
