@@ -86,6 +86,7 @@ html{scroll-behavior:smooth}
   .tl.l{right:auto;left:.4rem}.tl.r{left:auto;right:.4rem}
   .tl[style*="24%"]{top:.4rem!important}.tl[style*="76%"]{top:calc(50% + .4rem)!important}
 }
+h3{font:800 1.25rem/1.25 var(--display);color:var(--navy);margin:2rem 0 .6rem}
 </style>
 
 <div class="cover">
@@ -94,7 +95,7 @@ html{scroll-behavior:smooth}
 <main id="start">
 <article class="col">
 <header class="intro">
-  <div class="meta"><span class="kicker">Talk write-up · BSides Atlanta</span><span class="byline"><b>James Widner</b> · 8 min read</span></div>
+  <div class="meta"><span class="kicker">Talk write-up · BSides Atlanta</span><span class="byline"><b>James Widner</b> · 9 min read</span></div>
   <h1 class="sr-only">Taking the Day Off: AI stand-ins for Zoom</h1>
   <p class="lede">This is the written version of a talk I gave at BSides Atlanta about faking presence on a Zoom call. I didn't build a new model from scratch. I took models that exist today and routed them together so that what shows up on camera reads as a believable person. Below are the methods I tried, including the uncanny ones.</p>
 </header>
@@ -175,12 +176,18 @@ html{scroll-behavior:smooth}
 <h2>SoulX FlashHead</h2>
 <p>After a few million tokens of deep research, I found SoulX FlashHead from Soul AI Lab, built on Alibaba's Wan video model. It takes a flat photo of your floating head and your voice. It encodes the photo with the same VAE trick from the kitten, then runs just four clean-up steps, guided by the photo for who you are and the voice for what your mouth should be doing, and decodes new frames.</p>
 <p>It's only trained on people talking on calls. That's why it's so good at calls, and also why it can't do hands.</p>
+<h3>How they made Wan fast</h3>
+<p>SoulX is a distilled version of Wan 2.1. Wan is a general text-to-video model, and SoulX starts from its small 1.3-billion-parameter version. Distilled here doesn't mean they shrank the model. It means they taught it to get the same answer in way fewer steps. They did it in two stages.</p>
+<p><strong>Stage 1: turn Wan into a talking head.</strong> They retrained it on VividHead, 782 hours of people talking to a camera, cut down from 10,000 hours of raw footage. Two changes make it about you. Your photo gets stacked right onto the noise it starts from, so every frame is built on top of your face instead of being reimagined. And it always hears the last eight seconds of audio, so short bits of speech still line up with the mouth. It also learns to keep going from its own previous frames, which is what lets it stream. That stage was 100,000 training steps on 32 GPUs.</p>
+<p><strong>Stage 2: distill it.</strong> Now there's a teacher and a student. The teacher is the stage-1 model, which is good but slow, and it gets to see the real previous frames. The student has to work with only a few steps, and it only gets to see its own previous output, the same as on a live call. The student's job is to make videos the teacher would agree with. It's also pulled toward the real footage so it doesn't wander off. During training the student generates up to five chunks in a row, so it learns to recover from its own mistakes instead of slowly melting into the uncanny valley.</p>
+<p>The result runs in four steps. The Lite version also swaps in LTX's VAE, which squeezes the video about 32 times harder than Wan's own VAE, so there's much less to generate. That's how Lite hits 96 frames per second on a single RTX 4090. The Pro version keeps Wan's VAE, so it looks better, but it needs two RTX 5090s to keep up in real time.</p>
 <dl class="facts">
+  <dt>Base</dt><dd>Wan 2.1 text-to-video, 1.3 billion parameters</dd>
   <dt>Training</dt><dd>782 hours of people talking to a camera</dd>
-  <dt>Size</dt><dd>About 1.5 billion parameters</dd>
   <dt>Steps</dt><dd>4 denoising steps per chunk</dd>
-  <dt>Speed</dt><dd>6 s of generation → 12.43 s of video, about 2× real time</dd>
+  <dt>Speed</dt><dd>96 fps on one RTX 4090 (Lite, from the paper). On my setup, 6 s of generation → 12.43 s of video</dd>
 </dl>
+<p class="note">From the SoulX-FlashHead paper, <a href="https://arxiv.org/abs/2602.07449" target="_blank" rel="noopener">arXiv:2602.07449</a>.</p>
 
 <h2>Meet my stand-in</h2>
 <p>I gave SoulX a photo of my face and piped in some audio from Breeze.</p>
@@ -273,7 +280,7 @@ html{scroll-behavior:smooth}
 
 <section class="signoff col" style="display:block">
     <p><strong>James Widner</strong><br>Researcher at <a href="https://tensorlab.org" target="_blank" rel="noopener">Tensor Lab</a> · CS student at KSU</p>
-    <p class="note">LinkedIn: <a href="https://www.linkedin.com/in/james-widner-a41797330" target="_blank" rel="noopener">linkedin.com/in/james-widner-a41797330</a></p>
+    <p class="note">LinkedIn: <a href="https://www.linkedin.com/in/james-widner-a41797330" target="_blank" rel="noopener">linkedin.com/in/james-widner-a41797330</a> · GitHub: <a href="https://github.com/pi128" target="_blank" rel="noopener">github.com/pi128</a></p>
     <p class="note">Ferris Bueller's Day Off (1986) was written and directed by John Hughes. Film references are used for commentary; all Ferris voice and video in the demos is generated.</p>
   </section>
 </main>
